@@ -37,4 +37,4 @@ client.on('interactionCreate', async interaction => {
     }
 });
 
-client.login('MTM2MTgwODI3NzY1Mzk1MDYyNA.GRyvr-.TlfmpMQT8Sro9ghh9cn9mACalHYJsfJu3dWn-Q');
+client.login('');
