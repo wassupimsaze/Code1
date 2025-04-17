@@ -1,0 +1,40 @@
+const { SlashCommandBuilder } = require('discord.js');
+const { Client, GatewayIntentBits } = require('discord.js');
+
+const client = new Client({ intents: [GatewayIntentBits.Guilds] });
+
+client.once('ready', () => {
+    console.log('Bot is online!');
+});
+
+client.on('interactionCreate', async interaction => {
+    if (!interaction.isCommand()) return;
+
+    const { commandName } = interaction;
+
+    if (commandName === 'kick') {
+        const member = interaction.options.getMember('target');
+
+        if (!member) {
+            return interaction.reply({ content: 'User not found or not in the server.', ephemeral: true });
+        }
+
+        if (!interaction.member.permissions.has('KickMembers')) {
+            return interaction.reply({ content: 'You do not have permission to kick members.', ephemeral: true });
+        }
+
+        if (!member.kickable) {
+            return interaction.reply({ content: 'I cannot kick this member.', ephemeral: true });
+        }
+
+        try {
+            await member.kick();
+            interaction.reply({ content: `${member.user.tag} has been kicked.` });
+        } catch (error) {
+            console.error(error);
+            interaction.reply({ content: 'There was an error trying to kick this member.', ephemeral: true });
+        }
+    }
+});
+
+client.login('MTM2MTgwODI3NzY1Mzk1MDYyNA.GRyvr-.TlfmpMQT8Sro9ghh9cn9mACalHYJsfJu3dWn-Q');
